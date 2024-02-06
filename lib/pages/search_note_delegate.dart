@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:notee/bloc/note_bloc.dart';
 
 class SearchNoteDelegate extends SearchDelegate {
@@ -33,7 +34,8 @@ class SearchNoteDelegate extends SearchDelegate {
           final notes = state.notes;
           final filteredNotes = notes
               .where((element) =>
-                  element.title.toLowerCase().contains(query.toLowerCase()))
+                  element.title.toLowerCase().contains(query.toLowerCase()) ||
+                  element.content.toLowerCase().contains(query.toLowerCase()))
               .toList();
           return ListView.builder(
             itemCount: filteredNotes.length,
@@ -42,16 +44,12 @@ class SearchNoteDelegate extends SearchDelegate {
               return ListTile(
                 title: Text(note.title),
                 subtitle: Text(
-                  note.content.length >= 20
-                      ? "${note.content.substring(0, 20)}..."
-                      : note.content,
+                  note.content,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 onTap: () {
                   close(context, note.id);
-                  Navigator.of(context).pushNamed(
-                    '/view_edit',
-                    arguments: note.id,
-                  );
+                  GoRouter.of(context).go('/view_edit/${note.id}');
                 },
               );
             },
@@ -72,7 +70,8 @@ class SearchNoteDelegate extends SearchDelegate {
           final notes = state.notes;
           final filteredNotes = notes
               .where((element) =>
-                  element.title.toLowerCase().contains(query.toLowerCase()))
+                  element.title.toLowerCase().contains(query.toLowerCase()) ||
+                  element.content.toLowerCase().contains(query.toLowerCase()))
               .toList();
           return ListView.builder(
             itemCount: filteredNotes.length,
@@ -81,17 +80,13 @@ class SearchNoteDelegate extends SearchDelegate {
               return ListTile(
                 title: Text(note.title),
                 subtitle: Text(
-                  note.content.length >= 20
-                      ? "${note.content.substring(0, 20)}..."
-                      : note.content,
+                  note.content,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 onTap: () {
                   query = note.title;
                   close(context, note.id);
-                  Navigator.of(context).pushNamed(
-                    '/view_edit',
-                    arguments: note.id,
-                  );
+                  GoRouter.of(context).go('/view_edit/${note.id}');
                 },
               );
             },

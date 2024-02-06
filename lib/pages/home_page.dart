@@ -48,9 +48,8 @@ class _HomePageState extends State<HomePage> {
                 return ListTile(
                   title: Text(note.title),
                   subtitle: Text(
-                    note.content.length >= 20
-                        ? "${note.content.substring(0, 20)}..."
-                        : note.content,
+                    note.content,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
