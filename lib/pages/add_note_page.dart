@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:notee/bloc/note_bloc.dart';
 
 class AddNotePage extends StatefulWidget {
@@ -20,6 +21,9 @@ class _AddNotePageState extends State<AddNotePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Нова нотатка"),
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => GoRouter.of(context).go("/")),
       ),
       body: Column(children: [
         const SizedBox(height: 20),
@@ -53,7 +57,7 @@ class _AddNotePageState extends State<AddNotePage> {
 
             BlocProvider.of<NoteBloc>(context)
                 .add(AddNoteEvent(title, content));
-            Navigator.of(context).pop();
+            GoRouter.of(context).go("/");
           },
           child: const Text("Зберегти"),
         ),

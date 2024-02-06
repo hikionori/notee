@@ -3,22 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notee/bloc/note_bloc.dart';
 
 class ViewEditNotePage extends StatefulWidget {
-  const ViewEditNotePage({super.key});
+  final int id;
+  const ViewEditNotePage({super.key, required this.id});
 
   @override
   State<ViewEditNotePage> createState() => _ViewEditNotePageState();
 }
 
 class _ViewEditNotePageState extends State<ViewEditNotePage> {
-  late int id;
+  // late int id;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
   bool editMode = false;
 
   @override
   Widget build(BuildContext context) {
-    id = ModalRoute.of(context)!.settings.arguments as int;
-
     return Scaffold(
       appBar: AppBar(
         title: editMode
@@ -26,7 +25,7 @@ class _ViewEditNotePageState extends State<ViewEditNotePage> {
             : const Text("Перегляд нотатки"),
         actions: [
           IconButton(
-            icon: const Icon(Icons.edit),
+            icon: !editMode ? const Icon(Icons.edit) : const Icon(Icons.close),
             onPressed: () {
               // navigate to edit note page
               setState(() {
@@ -65,7 +64,7 @@ class _ViewEditNotePageState extends State<ViewEditNotePage> {
                     onPressed: () {
                       // update note
                       BlocProvider.of<NoteBloc>(context).add(UpdateNoteEvent(
-                        id,
+                        widget.id,
                         _titleController.text,
                         _contentController.text,
                       ));
@@ -81,7 +80,7 @@ class _ViewEditNotePageState extends State<ViewEditNotePage> {
           } else {
             if (state is NoteLoaded) {
               final note =
-                  state.notes.firstWhere((element) => element.id == id);
+                  state.notes.firstWhere((element) => element.id == widget.id);
               _titleController.text = note.title;
               _contentController.text = note.content;
               return SingleChildScrollView(

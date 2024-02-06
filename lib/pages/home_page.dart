@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:notee/bloc/note_bloc.dart';
 import 'package:notee/pages/search_note_delegate.dart';
 
@@ -82,9 +83,7 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                   onTap: () {
-                    // navigate to view/edit note page
-                    Navigator.of(context)
-                        .pushNamed('/view_edit', arguments: note.id);
+                    GoRouter.of(context).go('/view_edit/${note.id}');
                   },
                 );
               },
@@ -97,8 +96,7 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // navigate to add note page
-          Navigator.of(context).pushNamed('/add');
+          GoRouter.of(context).go('/add');
         },
         child: const Icon(Icons.add),
       ),
