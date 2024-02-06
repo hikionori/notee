@@ -46,14 +46,17 @@ class _ViewEditNotePageState extends State<ViewEditNotePage> {
                   TextField(
                     controller: _titleController,
                     decoration: const InputDecoration(
-                      labelText: "Title",
+                      labelText: "Назва",
+                      border: OutlineInputBorder(),
                     ),
                   ),
                   const SizedBox(height: 8),
-                  TextField(
+                  TextFormField(
                     controller: _contentController,
                     decoration: const InputDecoration(
-                      labelText: "Content",
+                      labelText: "Зміст",
+                      alignLabelWithHint: true,
+                      border: OutlineInputBorder(),
                     ),
                     maxLines: 10,
                   ),

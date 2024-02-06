@@ -35,11 +35,12 @@ class _AddNotePageState extends State<AddNotePage> {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: TextField(
+          child: TextFormField(
             controller: contentController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: "Зміст",
+              alignLabelWithHint: true,
             ),
             maxLines: 10,
           ),
