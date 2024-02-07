@@ -13,16 +13,21 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     on<NoteEvent>((event, emit) {
       if (event is LoadNotesEvent) {
         emit(NoteLoading());
-        emit(NoteLoaded(_noteStore.notes));
+        emit(NoteLoaded(_noteStore.notes
+          ..sort((a, b) => b.createdAt.compareTo(a.createdAt))));
       } else if (event is AddNoteEvent) {
         _noteStore.add(event.title, event.content);
-        emit(NoteLoaded(_noteStore.notes));
+        emit(NoteLoaded(_noteStore.notes
+          ..sort((a, b) => b.createdAt.compareTo(a.createdAt))));
       } else if (event is UpdateNoteEvent) {
         _noteStore.update(event.id, event.title, event.content);
-        emit(NoteLoaded(_noteStore.notes));
+        emit(NoteLoaded(_noteStore.notes
+          ..sort((a, b) => b.createdAt.compareTo(a.createdAt))));
       } else if (event is DeleteNoteEvent) {
         _noteStore.delete(event.id);
-        emit(NoteLoaded(_noteStore.notes));
+        // sort by last created
+        emit(NoteLoaded(_noteStore.notes
+          ..sort((a, b) => b.createdAt.compareTo(a.createdAt))));
       } else if (event is SearchNoteEvent) {
         emit(NoteLoaded(_noteStore.search(event.query)));
       } else if (event is GetNoteEvent) {
