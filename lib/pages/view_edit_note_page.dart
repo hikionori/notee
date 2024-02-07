@@ -38,81 +38,87 @@ class _ViewEditNotePageState extends State<ViewEditNotePage> {
       body: BlocBuilder<NoteBloc, NoteState>(
         builder: (context, state) {
           if (editMode) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: _titleController,
-                    decoration: const InputDecoration(
-                      labelText: "Назва",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _contentController,
-                    decoration: const InputDecoration(
-                      labelText: "Зміст",
-                      alignLabelWithHint: true,
-                      border: OutlineInputBorder(),
-                    ),
-                    maxLines: 10,
-                  ),
-                  const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () {
-                      // update note
-                      BlocProvider.of<NoteBloc>(context).add(UpdateNoteEvent(
-                        widget.id,
-                        _titleController.text,
-                        _contentController.text,
-                      ));
-                      setState(() {
-                        editMode = !editMode;
-                      });
-                    },
-                    child: const Text("Update"),
-                  ),
-                ],
-              ),
-            );
-          } else {
-            if (state is NoteLoadedState) {
-              final note =
-                  state.notes.firstWhere((element) => element.id == widget.id);
-              _titleController.text = note.title;
-              _contentController.text = note.content;
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        note.title,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        note.content,
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return buildEditView(context);
           }
+          if (state is NoteLoadedState) {
+            return buildView(state);
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         },
+      ),
+    );
+  }
+
+  SingleChildScrollView buildView(NoteLoadedState state) {
+    final note = state.notes.firstWhere((element) => element.id == widget.id);
+    _titleController.text = note.title;
+    _contentController.text = note.content;
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              note.title,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              note.content,
+              style: const TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Padding buildEditView(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          TextField(
+            controller: _titleController,
+            decoration: const InputDecoration(
+              labelText: "Назва",
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 8),
+          TextFormField(
+            controller: _contentController,
+            decoration: const InputDecoration(
+              labelText: "Зміст",
+              alignLabelWithHint: true,
+              border: OutlineInputBorder(),
+            ),
+            maxLines: 10,
+          ),
+          const SizedBox(height: 8),
+          ElevatedButton(
+            onPressed: () {
+              // update note
+              BlocProvider.of<NoteBloc>(context).add(UpdateNoteEvent(
+                widget.id,
+                _titleController.text,
+                _contentController.text,
+              ));
+              setState(() {
+                editMode = !editMode;
+              });
+            },
+            child: const Text("Update"),
+          ),
+        ],
       ),
     );
   }
