@@ -39,14 +39,14 @@ void main() {
     'emits [NoteLoading, NoteLoaded] when LoadNotesEvent is added',
     build: () => noteBloc,
     act: (bloc) => bloc.add(LoadNotesEvent()),
-    expect: () => [NoteLoading(), NoteLoaded(noteStore.notes)],
+    expect: () => [NoteLoadingState(), NoteLoadedState(noteStore.notes)],
   );
 
   blocTest<NoteBloc, NoteState>(
     'emits [NoteLoaded] when AddNoteEvent is added',
     build: () => noteBloc,
     act: (bloc) => bloc.add(AddNoteEvent('Test Title', 'Test Content')),
-    expect: () => [NoteLoaded(noteStore.notes)],
+    expect: () => [NoteLoadedState(noteStore.notes)],
   );
 
   blocTest<NoteBloc, NoteState>(
@@ -56,7 +56,7 @@ void main() {
       noteStore.add('Test Title', 'Test Content');
       bloc.add(UpdateNoteEvent(1, 'Updated Title', 'Updated Content'));
     },
-    expect: () => [NoteLoaded(noteStore.notes)],
+    expect: () => [NoteLoadedState(noteStore.notes)],
   );
 
   blocTest<NoteBloc, NoteState>(
@@ -66,7 +66,7 @@ void main() {
       noteStore.add('Test Title', 'Test Content');
       bloc.add(DeleteNoteEvent(1));
     },
-    expect: () => [NoteLoaded(noteStore.notes)],
+    expect: () => [NoteLoadedState(noteStore.notes)],
   );
 
   blocTest<NoteBloc, NoteState>(
@@ -76,7 +76,7 @@ void main() {
       noteStore.add('Test Title', 'Test Content');
       bloc.add(SearchNoteEvent('Test'));
     },
-    expect: () => [NoteLoaded(noteStore.notes)],
+    expect: () => [NoteLoadedState(noteStore.notes)],
   );
 
   blocTest<NoteBloc, NoteState>('emits [NoteLoaded] when GetNoteEvent is added',
@@ -89,7 +89,7 @@ void main() {
         final note = noteStore.get(1);
         if (note != null) {
           return [
-            NoteLoaded([note])
+            NoteLoadedState([note])
           ];
         } else {
           fail('Note not found');
@@ -100,6 +100,6 @@ void main() {
     'emits [NoteError] when GetNoteEvent is added with non-existing id',
     build: () => noteBloc,
     act: (bloc) => bloc.add(GetNoteEvent(999)),
-    expect: () => [NoteError('Note not found')],
+    expect: () => [NoteErrorState('Note not found')],
   );
 }

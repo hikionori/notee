@@ -11,29 +11,29 @@ abstract class NoteState implements Comparable<NoteState> {
   }
 }
 
-class NoteInitial extends NoteState with EquatableMixin {
+class NoteInitialState extends NoteState with EquatableMixin {
   @override
   List<Object> get props => [];
 }
 
-class NoteLoading extends NoteState with EquatableMixin {
+class NoteLoadingState extends NoteState with EquatableMixin {
   @override
   List<Object> get props => [];
 }
 
-class NoteLoaded extends NoteState with EquatableMixin {
+class NoteLoadedState extends NoteState with EquatableMixin {
   final List<Note> notes;
 
-  NoteLoaded(this.notes);
+  NoteLoadedState(this.notes);
 
   @override
   List<Object> get props => [notes];
 }
 
-class NoteError extends NoteState with EquatableMixin {
+class NoteErrorState extends NoteState with EquatableMixin {
   final String message;
 
-  NoteError(this.message);
+  NoteErrorState(this.message);
 
   @override
   List<Object> get props => [message];

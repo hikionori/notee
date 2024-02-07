@@ -12,7 +12,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
   /// The code you provided is the constructor of the `NoteBloc` class.
   final NoteStore noteStore = NoteStore();
 
-  NoteBloc() : super(NoteInitial()) {
+  NoteBloc() : super(NoteInitialState()) {
     on<NoteEvent>((event, emit) {
       switch (event.runtimeType) {
         case LoadNotesEvent:
@@ -34,45 +34,45 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
           _getNoteEvent(event as GetNoteEvent, emit);
           break;
         default:
-          emit(NoteError('Unknown event'));
+          emit(NoteErrorState('Unknown event'));
       }
     });
   }
 
   void _loadNotes(Emitter<NoteState> emit) {
-    emit(NoteLoading());
-    emit(NoteLoaded(noteStore.notes
+    emit(NoteLoadingState());
+    emit(NoteLoadedState(noteStore.notes
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt))));
   }
 
   void _addNoteEvent(AddNoteEvent event, Emitter<NoteState> emit) {
     noteStore.add(event.title, event.content);
-    emit(NoteLoaded(noteStore.notes
+    emit(NoteLoadedState(noteStore.notes
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt))));
   }
 
   void _updateNoteEvent(UpdateNoteEvent event, Emitter<NoteState> emit) {
     noteStore.update(event.id, event.title, event.content);
-    emit(NoteLoaded(noteStore.notes
+    emit(NoteLoadedState(noteStore.notes
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt))));
   }
 
   void _deleteNoteEvent(DeleteNoteEvent event, Emitter<NoteState> emit) {
     noteStore.delete(event.id);
-    emit(NoteLoaded(noteStore.notes
+    emit(NoteLoadedState(noteStore.notes
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt))));
   }
 
   void _searchNoteEvent(SearchNoteEvent event, Emitter<NoteState> emit) {
-    emit(NoteLoaded(noteStore.search(event.query)));
+    emit(NoteLoadedState(noteStore.search(event.query)));
   }
 
   void _getNoteEvent(GetNoteEvent event, Emitter<NoteState> emit) {
     final note = noteStore.get(event.id);
     if (note != null) {
-      emit(NoteLoaded([note]));
+      emit(NoteLoadedState([note]));
     } else {
-      emit(NoteError('Note not found'));
+      emit(NoteErrorState('Note not found'));
     }
   }
 

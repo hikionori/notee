@@ -78,7 +78,7 @@ class _ViewEditNotePageState extends State<ViewEditNotePage> {
               ),
             );
           } else {
-            if (state is NoteLoaded) {
+            if (state is NoteLoadedState) {
               final note =
                   state.notes.firstWhere((element) => element.id == widget.id);
               _titleController.text = note.title;

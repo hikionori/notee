@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: BlocBuilder<NoteBloc, NoteState>(
         builder: (context, state) {
-          if (state is NoteLoaded) {
+          if (state is NoteLoadedState) {
             final notes = state.notes;
             return ListView.builder(
               // reload list when user pull down

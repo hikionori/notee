@@ -30,7 +30,7 @@ class SearchNoteDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
-        if (state is NoteLoaded) {
+        if (state is NoteLoadedState) {
           final notes = state.notes;
           final filteredNotes = notes
               .where((element) =>
@@ -66,7 +66,7 @@ class SearchNoteDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
-        if (state is NoteLoaded) {
+        if (state is NoteLoadedState) {
           final notes = state.notes;
           final filteredNotes = notes
               .where((element) =>
